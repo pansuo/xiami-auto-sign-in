@@ -1,5 +1,11 @@
-xiami auto sign in
-==================
+多账户虾米自动签到器
+====================
 
-automatically sign in xiami.com and help to get xiami coins:P
-multi-account is supported~
+支持多账户的虾米自动签到器，帮助你化简每日签到的繁琐过程:P
+
+### 环境要求 ###
+
++ python3（建议python3.3+，[下载](http://python.org/getit/)）
+
+### 使用方法 ###
+1 
