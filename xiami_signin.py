@@ -1,5 +1,6 @@
-﻿#! /usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 script_info='''
 多账户虾米自动签到器
 请在http://python.org/getit/ 下载python3.
@@ -15,7 +16,8 @@ from urllib.parse import urlencode
 
 #在此填写账户名（可多账户）
 user_info=[
-	{"email":"","password":""},
+    {"email":"fkfkfk","password":""},
+	{"email":"fkfkbill@gmail.com","password":"fkbillnkcfd91C++"},
 ]
 
 
@@ -37,6 +39,7 @@ login_form={
 site_flags={
 	"logged-in":r"我的道具",
 	"login-failed":"密码错误",
+    "identify-required":"请输入验证码",
 	"not-signed-in":"签到得体验点",
 	"signed-in":"已连续签到",
 }
@@ -73,11 +76,13 @@ return:
 	content=urlopen(req).read().decode("utf-8")
 	
 	if content.find(site_flags["signed-in"])!=-1:
-		print("%s：已签过。\r\n"%user_info[n])
+		print("%s：已签过。\r\n"%user_info[n]["email"])
 	elif content.find(site_flags["login-failed"])!=-1:
-		print("%s：邮箱或密钥错误。\r\n"%user_info[n])
+		print("%s：邮箱或密钥错误。\r\n"%user_info[n]["email"])
+	elif content.find(site_flags["identify-required"])!=-1:
+		print("%s：虾米要求输入验证码- - 请断网后重新尝试。\r\n"%user_info[n]["email"])
 	elif content.find(site_flags["logged-in"])!=-1:
-		print("%s：登录成功。"%user_info[n])
+		print("%s：登录成功。"%user_info[n]["email"])
 		return opener
 	return None
 
