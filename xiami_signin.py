@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+﻿#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 script_info='''
 多账户虾米自动签到器
