@@ -1,15 +1,12 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-'''
+script_info='''
 多账户虾米自动签到器
-* 请在http://python.org/getit/ 下载python3.
-
+请在http://python.org/getit/ 下载python3.
 
 author: kk(fkfkbill@gmail.com)
-'''
 
-import sys,os
-from datetime import datetime
+'''
 
 from urllib.request import urlopen,install_opener,build_opener,Request,HTTPHandler,HTTPCookieProcessor
 from http.cookiejar import CookieJar
@@ -18,18 +15,19 @@ from urllib.parse import urlencode
 
 #在此填写账户名（可多账户）
 user_info=[
-	{"email":"","password":""},
+	{"email":"fkfkbill@gmail.com","password":"fkbillnkcfd91C++1"},
 ]
 
 
 #xiami uris
 site_urls={
-  "index":r"",
-  "login":r"",
-  "signin":r"",
+  "index":r"http://www.xiami.com/",
+  "login":r"http://www.xiami.com/member/login",
+  "signin":r"http://www.xiami.com/task/signin",
 }
 
 #login form without email and password
+# (and will be filled when loggin-in)
 login_form={
 	"done":"/",
 	"submit":"登 录",
@@ -37,44 +35,68 @@ login_form={
 
 #flags
 site_flags={
-  "logged-in":r"",
+	"logged-in":r"我的道具",
+	"login-failed":"密码错误",
+}
+
+headers={
+	"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+	"Accept-Encoding":"zip,deflate,sdch",
+	"Accept-Language":"en-US,en;q=0.8",
+	"Cache-Control":"max-age=0",
+	"Connection":"keep-alive",
+	"Host":"www.xiami.com",
+	"Referer":"http://www.xiami.com/",
+	"User-Agent":"Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36",
 }
 
 
-
-#======================================
-def login(id,password):
+#=========================
+def login(n):
 	'''
 login xiami.
 arugments:
-	id: user name or email address
-  password: key to login
+	n:
 return:
 	url opener:when succeeded
+	None:when failed
 '''
 	cookie_support= HTTPCookieProcessor(CookieJar())
 	opener = build_opener(cookie_support, HTTPHandler)
 	install_opener(opener)
 
-
-	headers={
-		"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-		"Cache-Control":"max-age=0",
-		"Connection":"keep-alive",
-		"Content-Length":92,
-		"Content-Type":"application/x-www-form-urlencoded",
-		"Host":"www.xiami.com",
-		"Origin":"http://www.xiami.com",
-		"Referer":"http://www.xiami.com/",
-		"User-Agent":"Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36",
-	}
-
+	lf=login_form
+	lf.update(user_info[n])
 	req=Request(url=site_urls["login"],
-			data=urlencode(user_info).encode("utf-8"),
+			data=urlencode(lf).encode("utf-8"),
+			headers=headers)
+	content=urlopen(req).read().decode("utf-8")
+	
+	if content.find(site_flags["logged-in"])!=-1:
+		print("%s：登录成功。"%user_info[n])
+		return opener
+	elif content.find(site_flags["login-failed"])!=-1:
+		print("%s：邮箱或密钥错误。"%user_info[n])
+	return None
+
+
+
+#=========================
+def signin(opener):
+	'''
+
+'''
+	if opener==None:return
+	install_opener(opener)
+	req=Request(url=site_urls["signin"],
 			headers=headers)
 	content=urlopen(req).read()
-	
-	#===search for sign
-	if content.decode("utf-8").find(login_sign)!=-1:
-		return opener
-	return False
+	return True
+
+
+
+#=========================
+if __name__=="__main__":
+	print(script_info)
+	for i in range(len(user_info)):
+		signin(login(i))
