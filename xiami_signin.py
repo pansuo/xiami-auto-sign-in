@@ -16,7 +16,6 @@ from urllib.parse import urlencode
 
 #在此填写账户名（可多账户）
 user_info=[
-    {"email":"fkfkfk","password":""},
 	{"email":"fkfkbill@gmail.com","password":"fkbillnkcfd91C++"},
 ]
 
@@ -40,8 +39,8 @@ site_flags={
 	"logged-in":r"我的道具",
 	"login-failed":"密码错误",
     "identify-required":"请输入验证码",
-	"not-signed-in":"签到得体验点",
-	"signed-in":"已连续签到",
+	"not-signed-in":"签到得体验点<span>",
+	"signed-in":"天<span>已连续签到</span><",
 }
 
 headers={
@@ -80,7 +79,7 @@ return:
 	elif content.find(site_flags["login-failed"])!=-1:
 		print("%s：邮箱或密钥错误。\r\n"%user_info[n]["email"])
 	elif content.find(site_flags["identify-required"])!=-1:
-		print("%s：虾米要求输入验证码- - 请断网后重新尝试。\r\n"%user_info[n]["email"])
+		print("%s：虾米要求输入验证码，请断网后重新尝试。\r\n"%user_info[n]["email"])
 	elif content.find(site_flags["logged-in"])!=-1:
 		print("%s：登录成功。"%user_info[n]["email"])
 		return opener
