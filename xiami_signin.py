@@ -16,7 +16,7 @@ from urllib.parse import urlencode
 
 #在此填写账户名（可多账户）
 user_info=[
-	{"email":"fkfkbill@gmail.com","password":"fkbillnkcfd91C++"},
+	{"email":"","password":""},
 ]
 
 
